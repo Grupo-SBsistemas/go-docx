@@ -1,4 +1,4 @@
-module github.com/lukasjarosch/go-docx
+module github.com/Grupo-SBsistemas/go-docx
 
 go 1.17
 
