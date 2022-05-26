@@ -169,7 +169,7 @@ func (d *Document) GetPlaceHoldersList() ([]string, error) {
 	for file := range d.files {
 		if _, ok := d.runParsers[file]; !ok {
 			return nil, fmt.Errorf("no parser for file %s", file)
-		}		
+		}
 		replacer := d.fileReplacers[file]
 		placeholders := replacer.placeholders
 		for _, placeholder := range placeholders {
@@ -179,13 +179,13 @@ func (d *Document) GetPlaceHoldersList() ([]string, error) {
 
 	return placeholdersTextList, nil
 }
-// replace will create a parser on the given bytes, execute it and replace every placeholders found with the data
+
+// Replace will create a parser on the given bytes, execute it and replace every placeholders found with the data
 // from the placeholderMap.
 func (d *Document) replace(placeholderMap PlaceholderMap, file string) ([]byte, error) {
 	if _, ok := d.runParsers[file]; !ok {
 		return nil, fmt.Errorf("no parser for file %s", file)
 	}
-	placeholderCount := d.countPlaceholders(file, placeholderMap)
 	placeholders := d.filePlaceholders[file]
 	replacer := d.fileReplacers[file]
 
@@ -198,11 +198,6 @@ func (d *Document) replace(placeholderMap PlaceholderMap, file string) ([]byte, 
 				return nil, err
 			}
 		}
-	}
-
-	// ensure that all placeholders have been replaced
-	if placeholderCount != replacer.ReplaceCount {
-		return nil, fmt.Errorf("not all placeholders were replaced, want=%d, have=%d", placeholderCount, replacer.ReplaceCount)
 	}
 
 	d.fileReplacers[file] = replacer
@@ -229,7 +224,7 @@ func (d *Document) Placeholders() (placeholders []*Placeholder) {
 
 // countPlaceholders will return the total count of placeholders from the placeholderMap in the given data.
 // Reoccurring placeholders are also counted multiple times.
-func (d *Document) countPlaceholders(file string, placeholderMap PlaceholderMap) int {
+func (d *Document) CountPlaceholders(file string, placeholderMap PlaceholderMap) int {
 	data := d.GetFile(file)
 	plaintext := d.stripXmlTags(string(data))
 	var placeholderCount int
